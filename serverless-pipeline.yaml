@@ -17,7 +17,7 @@ steps:
     working-directory: ./nodejs
   - name: zip node_modules
     run: zip -rqy my-layer-code.zip nodejs -x './package.json' 'node_modules/.cache' 'node_modules/esbuild*' 'node_modules/@babel*' 'node_modules/@types*' 'node_modules/webpack*' 'node_modules/@sentry*'
-  - name: npm install @serverless-devs/s -g
+  - run: npm install @serverless-devs/s -g
   - run: s cli fc layer publish --code ./my-layer-code.zip --compatible-runtime nodejs16,nodejs14,custom  --region cn-shenzhen --layer-name strapi -a default_serverless_devs_access
     env:
       default_serverless_devs_access: '{"AccountID":"${{cloudSecrets.AccountID}}","AccessKeyID":"${{cloudSecrets.AccessKeyID}}","AccessKeySecret":"${{cloudSecrets.AccessKeySecret}}"}'
