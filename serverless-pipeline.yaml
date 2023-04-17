@@ -1,0 +1,20 @@
+name: "Construct Layer"
+
+steps:
+  - run: mkdir nodejs
+  - run: ls -al
+    working-directory: ./nodejs
+  - name: create package.json
+    run: echo '{"dependencies":{"@strapi/strapi":"4.9.1","@strapi/plugin-users-permissions":"4.9.1","@strapi/plugin-i18n":"4.9.1","better-sqlite3":"8.0.1"},"strapi":{"uuid":"3eb0b62d-fe48-4b3e-9e3c-c3f964719162"}}' > package.json
+    working-directory: ./nodejs
+  - name: npm install
+    run: |
+      npm config set sharp_binary_host "https://npmmirror.com/mirrors/sharp"
+      npm config set sharp_libvips_binary_host "https://npmmirror.com/mirrors/sharp-libvips"
+      SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install
+    working-directory: ./nodejs
+  - name: zip node_modules
+    run: zip -rqy my-layer-code.zip nodejs -x './package.json' 'node_modules/.cache' 'node_modules/esbuild*' 'node_modules/@babel*' 'node_modules/@types*' 'node_modules/webpack*' 'node_modules/@sentry*'
+  - run: s cli fc layer publish --code ./my-layer-code.zip --compatible-runtime nodejs16,nodejs14,custom  --region cn-shenzhen --layer-name strapi -a default_serverless_devs_access
+    env:
+      default_serverless_devs_access: '{"AccountID":"${{cloudSecrets.AccountID}}","AccessKeyID":"${{cloudSecrets.AccessKeyID}}","AccessKeySecret":"${{cloudSecrets.AccessKeySecret}}"}'
