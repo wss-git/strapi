@@ -1,0 +1,10 @@
+./.DS_Store
+./.s
+./s.yaml
+./.cache
+./node_modules/.cache
+./node_modules/esbuild*
+./node_modules/@babel*
+./node_modules/@types*
+./node_modules/webpack*
+./node_modules/@sentry*
