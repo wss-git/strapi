@@ -1,0 +1,65 @@
+edition: 1.0.0
+name: start-strapi
+access: "dankun"
+
+vars:
+  region: "cn-shenzhen"
+  caPort: 1337
+  service:
+    name: "strapi"
+    description: 'Serverless Devs Web Framework Service'
+    # logConfig: auto
+    # nasConfig: auto
+
+services:
+  strapi-production:
+    component: fc
+    # actions:
+    #   pre-deploy:
+    #     - run: |
+    #         npm config set sharp_binary_host "https://npmmirror.com/mirrors/sharp"
+    #         npm config set sharp_libvips_binary_host "https://npmmirror.com/mirrors/sharp-libvips"
+    #         SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc
+    props:
+      region: ${vars.region}
+      service: ${vars.service}
+      function:
+        name: strapi-production
+        description: 'strapi 生产环境'
+        codeUri: './'
+        runtime: custom
+        instanceConcurrency: 10
+        timeout: 60
+        caPort: ${vars.caPort}
+        memorySize: 256
+        layers:
+          - acs:fc:${vars.region}:1740298130743624:layers/strapi/versions/1
+          - acs:fc:${vars.region}:official:layers/Nodejs16/versions/2
+        environmentVariables:
+          NODE_ENV: production
+          NODE_PATH: /opt/nodejs/node_modules
+          PATH: /opt/nodejs/node_modules/.bin:/opt/nodejs/node_modules:/opt:/opt/nodejs16/bin:/usr/local/bin/apache-maven/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ruby/bin
+          API_TOKEN_SALT: ${env.API_TOKEN_SALT}
+          DATABASE_FILENAME: ${env.DATABASE_FILENAME}
+          APP_KEYS: ${env.APP_KEYS}
+          JWT_SECRET: ${env.JWT_SECRET}
+          PORT: ${vars.caPort}
+          ADMIN_JWT_SECRET: ${env.ADMIN_JWT_SECRET}
+          HOST: 0.0.0.0
+          DATABASE_CLIENT: sqlite
+          TRANSFER_TOKEN_SALT: ${env.TRANSFER_TOKEN_SALT}
+        customRuntimeConfig:
+          command:
+            - node
+            - server.js
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+              - POST
+              - PUT
+              - HEAD
+              - DELETE
