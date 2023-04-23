@@ -13,11 +13,14 @@ steps:
     inputs:
       key: ${{hashFile('./yarn.lock')}}
       path: ./node_modules
+  
+  - run: echo ${{ typeof steps.codeCache.outputs['cache-hit'] }}
+  - run: echo ${{ steps.codeCache.outputs['cache-hit'] }}
+  - run: ls -al node_modules
+
   # - name: 安装devs工具
   #   run: npm i @serverless-devs/s -g --registry=https://registry.npmmirror.com
-  - run: s -v
-  - run: echo ${{ typeof steps.codeCache.outputs['cache-hit'] }}
-  - run: echo ${{  steps.codeCache.outputs['cache-hit'] }}
+  # - run: s -v
   # - run: npm install --production
   #   if: ${{steps.codeCache.outputs['cache-hit'] != true}}
   # - name: 部署函数
