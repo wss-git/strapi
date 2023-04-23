@@ -17,6 +17,7 @@ steps:
     run: npm i @serverless-devs/s -g --registry=https://registry.npmmirror.com
   - run: s -v
   - run: npm install --production
+    if: ${{steps.codeCache.outputs['cache-hit'] != true}}
   - name: 部署函数
     run: s deploy --use-local -y -a default_serverless_devs_access
     env:
