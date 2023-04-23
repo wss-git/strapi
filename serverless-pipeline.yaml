@@ -11,9 +11,9 @@ steps:
     plugin: "@serverless-cd/cache"
     id: codeCache
     inputs:
-      key: ${{hashFile('./yarn.lock')}}
+      key: ${{hashFile('./package.json')}}
       path: ./node_modules
-  - run: echo "cache key ${{hashFile('./yarn.lock')}}" 
+  - run: echo "cache key ${{hashFile('./package.json')}}" 
   - name: 安装devs工具
     run: npm i @serverless-devs/s -g --registry=https://registry.npmmirror.com
   - run: s -v
