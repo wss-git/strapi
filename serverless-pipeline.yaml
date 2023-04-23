@@ -13,13 +13,15 @@ steps:
     inputs:
       key: ${{hashFile('./yarn.lock')}}
       path: ./node_modules
-  - name: 安装devs工具
-    run: npm i @serverless-devs/s -g --registry=https://registry.npmmirror.com
+  # - name: 安装devs工具
+  #   run: npm i @serverless-devs/s -g --registry=https://registry.npmmirror.com
   - run: s -v
-  - run: npm install --production
-    if: ${{steps.codeCache.outputs['cache-hit'] != true}}
-  - name: 部署函数
-    run: s deploy --use-local -y -a default_serverless_devs_access
-    env:
-      # 关联云账号使用方式：推荐。因为这种使用方式不需要在插件 @serverless-cd/cache 里面声明 credentials 字段了
-      default_serverless_devs_access: '{"AccountID":"${{cloudSecrets.AccountID}}","AccessKeyID":"${{cloudSecrets.AccessKeyID}}","AccessKeySecret":"${{cloudSecrets.AccessKeySecret}}"}'
+  - run: echo ${{ typeof steps.codeCache.outputs['cache-hit'] }}
+  - run: echo ${{  steps.codeCache.outputs['cache-hit'] }}
+  # - run: npm install --production
+  #   if: ${{steps.codeCache.outputs['cache-hit'] != true}}
+  # - name: 部署函数
+  #   run: s deploy --use-local -y -a default_serverless_devs_access
+  #   env:
+  #     # 关联云账号使用方式：推荐。因为这种使用方式不需要在插件 @serverless-cd/cache 里面声明 credentials 字段了
+  #     default_serverless_devs_access: '{"AccountID":"${{cloudSecrets.AccountID}}","AccessKeyID":"${{cloudSecrets.AccessKeyID}}","AccessKeySecret":"${{cloudSecrets.AccessKeySecret}}"}'
