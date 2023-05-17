@@ -1,14 +1,8 @@
 name: "Construct Layer"
 
 steps:
-  - name: 缓存devs工具组件
-    plugin: "@serverless-cd/cache@0.0.10-beta.2"
-    id: sCacheComponents
-    inputs:
-      key: s-components/v1
-      path: /root/.s/components
   - name: 缓存 npm 依赖包
-    plugin: "@serverless-cd/cache"
+    plugin: "@serverless-cd/cache@0.0.10-beta.2"
     id: codeCache
     inputs:
       key: test-wss-cache
