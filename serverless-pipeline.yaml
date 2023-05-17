@@ -8,9 +8,9 @@ steps:
       key: test-wss-cache
       path: ./node_modules
 #   - run: echo "cache key ${{hashFile('./package.json')}}" 
-  - name: 安装devs工具
-    run: npm i @serverless-devs/s -g --registry=https://registry.npmmirror.com
-  - run: s -v
+#   - name: 安装devs工具
+#     run: npm i @serverless-devs/s -g --registry=https://registry.npmmirror.com
+#   - run: s -v
   - run: npm install --production
 #     if: ${{steps.codeCache.outputs['cache-hit'] != true}}
 #   - name: 部署函数
