@@ -2,7 +2,7 @@ name: "Construct Layer"
 
 steps:
   - name: 缓存devs工具组件
-    plugin: "@serverless-cd/cache"
+    plugin: "@serverless-cd/cache@0.0.10-beta.2"
     id: sCacheComponents
     inputs:
       key: s-components/v1
@@ -11,16 +11,16 @@ steps:
     plugin: "@serverless-cd/cache"
     id: codeCache
     inputs:
-      key: ${{hashFile('./package.json')}}
+      key: test-wss-cache
       path: ./node_modules
-  - run: echo "cache key ${{hashFile('./package.json')}}" 
+#   - run: echo "cache key ${{hashFile('./package.json')}}" 
   - name: 安装devs工具
     run: npm i @serverless-devs/s -g --registry=https://registry.npmmirror.com
   - run: s -v
   - run: npm install --production
-    if: ${{steps.codeCache.outputs['cache-hit'] != true}}
-  - name: 部署函数
-    run: s deploy --use-local -y -a default_serverless_devs_access
-    env:
-      # 关联云账号使用方式：推荐。因为这种使用方式不需要在插件 @serverless-cd/cache 里面声明 credentials 字段了
-      default_serverless_devs_access: '{"AccountID":"${{cloudSecrets.AccountID}}","AccessKeyID":"${{cloudSecrets.AccessKeyID}}","AccessKeySecret":"${{cloudSecrets.AccessKeySecret}}"}'
+#     if: ${{steps.codeCache.outputs['cache-hit'] != true}}
+#   - name: 部署函数
+#     run: s deploy --use-local -y -a default_serverless_devs_access
+#     env:
+#       # 关联云账号使用方式：推荐。因为这种使用方式不需要在插件 @serverless-cd/cache 里面声明 credentials 字段了
+#       default_serverless_devs_access: '{"AccountID":"${{cloudSecrets.AccountID}}","AccessKeyID":"${{cloudSecrets.AccessKeyID}}","AccessKeySecret":"${{cloudSecrets.AccessKeySecret}}"}'
