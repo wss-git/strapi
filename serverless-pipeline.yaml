@@ -2,10 +2,10 @@ name: "Construct Layer"
 
 steps:
   - name: 缓存 npm 依赖包
-    plugin: "@serverless-cd/cache@0.0.10-beta.5"
+    plugin: "@serverless-cd/cache@0.0.10-beta.6"
     id: codeCache
     inputs:
-      key: test-wss-cache-2
+      key: test-wss-cache-3
       path: ./node_modules
 #   - run: echo "cache key ${{hashFile('./package.json')}}" 
 #   - name: 安装devs工具
